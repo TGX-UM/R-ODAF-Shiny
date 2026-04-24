@@ -1,0 +1,28 @@
+ScanName	FactorValuecompound	FactorValuedose	Unitconcentrationunit	FactorValuetime	treatment
+C22	dimethyl sulfoxide	0.1	percent	48	control
+C23	dimethyl sulfoxide	0.1	percent	48	control
+C24	dimethyl sulfoxide	0.1	percent	48	control
+C4	dimethyl sulfoxide	0.1	percent	24	control
+C40	dimethyl sulfoxide	0.1	percent	72	control
+C41	dimethyl sulfoxide	0.1	percent	72	control
+C42	dimethyl sulfoxide	0.1	percent	72	control
+C25	doxorubicin	1	micromolar	48	exposure
+C26	doxorubicin	1	micromolar	48	exposure
+C27	doxorubicin	1	micromolar	48	exposure
+C43	doxorubicin	1	micromolar	72	exposure
+C44	doxorubicin	1	micromolar	72	exposure
+C45	doxorubicin	1	micromolar	72	exposure
+C7	doxorubicin	1	micromolar	24	exposure
+C8	doxorubicin	1	micromolar	24	exposure
+C9	doxorubicin	1	micromolar	24	exposure
+C10	doxorubicin	10	micromolar	24	exposure
+C11	doxorubicin	10	micromolar	24	exposure
+C12	doxorubicin	10	micromolar	24	exposure
+C28	doxorubicin	10	micromolar	48	exposure
+C29	doxorubicin	10	micromolar	48	exposure
+C30	doxorubicin	10	micromolar	48	exposure
+C46	doxorubicin	10	micromolar	72	exposure
+C47	doxorubicin	10	micromolar	72	exposure
+C48	doxorubicin	10	micromolar	72	exposure
+C5	dimethyl sulfoxide	0.1	percent	24	control
+C6	dimethyl sulfoxide	0.1	percent	24	control
