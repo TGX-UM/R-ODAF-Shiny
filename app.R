@@ -1,40 +1,3 @@
-##############################################################################
-# shinyapp_with_homepage_multidataset.R – R-ODAF DESeq2 pipeline (multi-dataset)
-# + SQL Warehouse Feature (SESSION-ONLY, in-memory; NO files created)
-# + Results Comparison (Pairwise, sensible SQL Queries)
-# + Timepoint-specific contrasts (Dose within selected Timepoints)
-# + Optional pathway analysis via enrichR
-#
-# FIX APPLIED:
-# - Removed all hard-coded LIMIT 500 clauses from Results Comparison SQL queries.
-# - Enabled server-side DT rendering for the comparison table to avoid browser slowdowns.
-# - Top gene expression and Avg expression merged into a single "Gene expression" tab.
-# - Added Volcano plot as a third sub-tab within Gene expression.
-# - Added volcano gene table below the volcano plot (top up- and downregulated genes).
-# - Removed the "Show top significant labels" option from Volcano plot.
-# - Results Comparison merged into Results tab (shown underneath warehouse table).
-# - Results tab moved before Pathway analysis.
-# - Pathway analysis is now optional and runs only when selected by the user.
-# - Pathway analysis tab appears only when selected by the user.
-# - Pathway analysis uses filtered DEG inputs only.
-# - Pathway analysis input threshold is hardcoded to padj < 0.01.
-# - "Filter: None" is no longer shown in user-facing summaries.
-# - Summary tab moved after Pathway analysis.
-# - Results Explorer renamed to Results.
-# - Contact / Help tab now includes direct links to your GitHub issue page.
-# - Home page SQL Results text is now normal style (not bold).
-# - Documentation tab now includes the VHP4Safety R-ODAF documentation link.
-# - Removed the original R-ODAF citation by Verheijen from the app text.
-# - Added bundled example-data loading from www/examples/.
-# - Removed GeneSymbol_norm and now use GeneSymbol_Key as the normalized key field.
-# - Simplified the Home page into a lighter, card-based layout with minimal text.
-# - Added Supported by logo strip at the bottom of the Home page using www/logos/.
-# - DEG heatmap now renders as an image inside Shiny for more reliable display.
-#
-# IMPORTANT:
-# - SQL exists, but is SESSION-ONLY (SQLite ":memory:"). No files are created.
-# - Closing the app clears the SQL warehouse automatically.
-##############################################################################
 
 library(shiny)
 library(DT)
@@ -2890,6 +2853,3 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-# Note: This version keeps SQL session-only (in-memory) and creates NO files.
-# It does NOT solve orthology mapping (mouse vs human genes that are not identical symbols).
-# If pathway analysis is enabled, enrichR requires access to the enrichR service to retrieve pathway results.
