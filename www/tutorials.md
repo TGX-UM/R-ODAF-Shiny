@@ -204,6 +204,8 @@ This tab also provides several download options, including:
 - **Download genes tested**
 - **Download samples used**
 
+Note: In some runs, the DEG heatmap may not display directly inside the Shiny interface after the analysis finishes. If this happens, the heatmap can still be accessed by downloading it from the DE results tab. When running the app locally through RStudio, it may also still be visible in the RStudio plotting/output environment. This does not affect the underlying DEG results.
+
 These outputs are central for both interpretation and reproducibility.
 
 ![Step 6 – DE results table](tutorials/step6_de_results_table.png)
