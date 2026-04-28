@@ -84,5 +84,5 @@ Regulatory Toxicology and Pharmacology, 131, 105143. https://doi.org/10.1016/j.y
 
 Credits
 
-Developed by Saad Lodhi under supervision of Marcha Verheijen, Theo M. de Kok, Florian Caiment, and Danyel Jennen.
-Part of the R-ODAF at Maastricht University.
+Developed by Saad Lodhi.
+Part of the R-ODAF pipeline, Department of Translational Genomics at Maastricht University.
