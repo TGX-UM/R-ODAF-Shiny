@@ -73,9 +73,7 @@ Please cite the R-ODAF framework and this Shiny implementation:
 
 
 R-ODAF-Shiny (this work)
-Saad Lodhi, Marcha Verheijen, Theo M. de Kok, Florian Caiment, Danyel Jennen (2025).
-R-ODAF-Shiny: A Graphical Interface for Reproducible Transcriptomics Analysis.
-(Manuscript in preparation, Maastricht University).
+Citation will follow soon!
 
 R-ODAF (framework)
 Verheijen M.C., Meier M.J., Asensio J.O., Gant T.W., Tong W., Yauk C.L., Caiment F. (2022).
