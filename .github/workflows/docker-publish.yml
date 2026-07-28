@@ -60,12 +60,19 @@ jobs:
             type=sha,format=short
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
 
-      - name: Build and push
+      # Build into the LOCAL daemon (load: true), do NOT push here. This is the
+      # crux of the verify-then-publish flow: build-push-action with push:false
+      # leaves the image only in the buildx cache -- neither pushed nor loadable
+      # -- so a later `docker run <tag>` fails with "Unable to find image
+      # locally ... denied". Loading it means the exact bytes we verify below are
+      # the exact bytes we push afterwards. (load: true is single-platform, which
+      # is fine -- this image is linux/amd64.)
+      - name: Build image (load into local daemon)
         id: build
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name == 'push' || inputs.push_image }}
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # Layer cache matters a lot here: without it every run recompiles the
@@ -73,12 +80,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Pick the local image reference
+        id: img
+        run: echo "ref=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" >> "$GITHUB_OUTPUT"
+
       # The Dockerfile already fails the build on drift in the packages that
       # determine the DE results. This re-asserts it on the finished image, so a
       # cache hit can never mask a bad layer.
       - name: Verify pinned package versions in the built image
         run: |
-          docker run --rm "$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" \
+          docker run --rm "${{ steps.img.outputs.ref }}" \
             R -q -e 'exp <- c(DESeq2="1.50.2", edgeR="4.8.2", PCAtools="2.22.4",
                               org.Hs.eg.db="3.22.0", AnnotationDbi="1.72.0");
                      got <- vapply(names(exp), function(p) as.character(packageVersion(p)), "");
@@ -88,11 +99,21 @@ jobs:
 
       - name: Record the full package inventory as a build artifact
         run: |
-          docker run --rm "$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" \
+          docker run --rm "${{ steps.img.outputs.ref }}" \
             R -q -e 'write.csv(installed.packages()[,c("Package","Version","Built")],
                                stdout(), row.names=FALSE)' \
             | grep -v '^>' | grep '^"' > packages.csv
           wc -l packages.csv
+
+      # Only now, and only when actually publishing, push the verified image.
+      # The tags are already on the local image from the load above, so this just
+      # uploads layers -- no rebuild.
+      - name: Push verified image to GHCR
+        if: github.event_name == 'push' || inputs.push_image
+        run: |
+          echo '${{ steps.meta.outputs.tags }}' | while read -r t; do
+            [ -n "$t" ] && docker push "$t"
+          done
 
       - name: Upload package inventory
         uses: actions/upload-artifact@v4
