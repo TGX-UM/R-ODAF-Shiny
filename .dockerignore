@@ -1,0 +1,23 @@
+# The Dockerfile ends with `COPY ./ ./` into /srv/shiny-server, so anything left
+# here is baked into a published image. Shiny Server does not currently serve
+# these over HTTP (verified 2026-07-23: app.R, .Rhistory, .RData, .git/config all
+# return 404/403, because the directory is treated as a single app), but that is
+# a property of the current layout, not a guarantee -- and a published image is
+# copyable regardless of what the web server exposes.
+.git
+.gitattributes
+.github
+
+# ~2 MB of saved workspace and 512 lines of console history. Neither is used at
+# runtime; both are just the developer's session state.
+.RData
+.Rhistory
+
+# Stale: pins R 4.3.3 / Bioconductor 3.17 / DESeq2 1.40.2, while this image is
+# R 4.5.3 / Bioc 3.22 / DESeq2 1.50.2. Kept in the repo for history but must not
+# influence the build. See HANDOVER.md.
+renv.lock
+renv
+
+Dockerfile
+.dockerignore

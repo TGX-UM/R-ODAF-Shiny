@@ -1,0 +1,116 @@
+name: Build and publish container image
+
+# Deliberately NOT on every push. TGX-UM is on the GitHub Free plan, so private
+# repos draw on a shared monthly Actions allowance, and this image compiles
+# DESeq2/edgeR from source -- it is not a cheap build. Tag a release when you
+# want a published image, or run it by hand.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      push_image:
+        description: 'Push to GHCR (uncheck for a build-only test)'
+        type: boolean
+        default: true
+
+env:
+  REGISTRY: ghcr.io
+  # github.repository is TGX-UM/R-ODAF-Shiny; Docker rejects uppercase in a tag,
+  # so the image name is lowercased below rather than interpolated directly.
+  IMAGE_NAME: r-odaf
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Compute lowercase image reference
+        id: ref
+        run: |
+          owner="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          echo "image=${{ env.REGISTRY }}/${owner}/${{ env.IMAGE_NAME }}" >> "$GITHUB_OUTPUT"
+
+      # Login is gated so a fork or a build-only dispatch still builds without
+      # needing credentials.
+      - name: Log in to GHCR
+        if: github.event_name == 'push' || inputs.push_image
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Derive tags
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.ref.outputs.image }}
+          tags: |
+            type=ref,event=tag
+            type=sha,format=short
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
+
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name == 'push' || inputs.push_image }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Layer cache matters a lot here: without it every run recompiles the
+          # Bioconductor stack from source.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # The Dockerfile already fails the build on drift in the packages that
+      # determine the DE results. This re-asserts it on the finished image, so a
+      # cache hit can never mask a bad layer.
+      - name: Verify pinned package versions in the built image
+        run: |
+          docker run --rm "$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" \
+            R -q -e 'exp <- c(DESeq2="1.50.2", edgeR="4.8.2", PCAtools="2.22.4",
+                              org.Hs.eg.db="3.22.0", AnnotationDbi="1.72.0");
+                     got <- vapply(names(exp), function(p) as.character(packageVersion(p)), "");
+                     print(data.frame(expected=exp, got=got));
+                     if (any(got != exp)) stop("pinned package drift");
+                     cat("OK\n")'
+
+      - name: Record the full package inventory as a build artifact
+        run: |
+          docker run --rm "$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" \
+            R -q -e 'write.csv(installed.packages()[,c("Package","Version","Built")],
+                               stdout(), row.names=FALSE)' \
+            | grep -v '^>' | grep '^"' > packages.csv
+          wc -l packages.csv
+
+      - name: Upload package inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-inventory
+          path: packages.csv
+
+      - name: Summary
+        run: |
+          {
+            echo "### Image"
+            echo '```'
+            echo "${{ steps.meta.outputs.tags }}"
+            echo "digest: ${{ steps.build.outputs.digest }}"
+            echo '```'
+            echo "Pinned package check passed. Inventory attached as an artifact --"
+            echo "diff it against the running container before deploying:"
+            echo '```'
+            echo "ssh tgx1 \"docker exec \\\$(docker ps -q -f name=r-odaf) R -q -e 'write.csv(installed.packages()[,c(\\\"Package\\\",\\\"Version\\\")],stdout(),row.names=FALSE)'\""
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
