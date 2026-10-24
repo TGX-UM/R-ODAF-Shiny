@@ -2,17 +2,42 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "R-ODAF-Shiny",
-  "description": "Shiny-based interface for the R-ODAF DESeq2 pipeline ensuring reproducible transcriptomics analysis.",
+  "description": "Interactive R Shiny application implementing the downstream RNA-Seq differential-expression component of the R-ODAF framework using predefined analytical criteria for reproducible transcriptomics analysis.",
   "identifier": "https://r-odaf.nl",
   "license": "MIT",
-  "version": "0.9.0",
+  "version": "1.0.1",
   "programmingLanguage": "R",
-  "codeRepository": "https://github.com/fcaiment/R-ODAF/tree/shiny-version/Shiny_App",
+  "codeRepository": "https://github.com/TGX-UM/R-ODAF-Shiny",
   "author": [
-    {"givenName": "Saad", "familyName": "Lodhi", "affiliation": "Maastricht University"},
-    {"givenName": "Marcha", "familyName": "Verheijen"},
-    {"givenName": "Theo M.", "familyName": "de Kok"},
-    {"givenName": "Florian", "familyName": "Caiment"},
-    {"givenName": "Danyel", "familyName": "Jennen"}
+    {
+      "givenName": "Saad",
+      "familyName": "Lodhi",
+      "affiliation": "Maastricht University"
+    },
+    {
+      "givenName": "Ozan",
+      "familyName": "Cinar",
+      "affiliation": "Maastricht University"
+    },
+    {
+      "givenName": "Marcha CT",
+      "familyName": "Verheijen",
+      "affiliation": "Maastricht University"
+    },
+    {
+      "givenName": "Theo M.",
+      "familyName": "de Kok",
+      "affiliation": "Maastricht University"
+    },
+    {
+      "givenName": "Florian",
+      "familyName": "Caiment",
+      "affiliation": "Maastricht University"
+    },
+    {
+      "givenName": "Danyel",
+      "familyName": "Jennen",
+      "affiliation": "Maastricht University"
+    }
   ]
 }

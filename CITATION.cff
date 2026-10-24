@@ -1,45 +1,53 @@
 cff-version: 1.2.0
-title: "R-ODAF-Shiny: Graphical Interface for the R-ODAF DEG Pipeline"
+title: "R-ODAF-Shiny: An Interactive and Reproducible Transcriptomics Analysis Framework for Regulatory Application"
 message: "If you use this software, please cite it as below."
 type: software
+
 authors:
   - family-names: Lodhi
     given-names: Saad
     affiliation: Maastricht University
-  - family-names: Verheijen
-    given-names: Marcha
+
+  - family-names: Cinar
+    given-names: Ozan
     affiliation: Maastricht University
+
+  - family-names: Verheijen
+    given-names: Marcha CT
+    affiliation: Maastricht University
+
   - family-names: de Kok
     given-names: Theo M.
     affiliation: Maastricht University
+
   - family-names: Caiment
     given-names: Florian
     affiliation: Maastricht University
+
   - family-names: Jennen
     given-names: Danyel
     affiliation: Maastricht University
+
 abstract: >
-  A Shiny-based interface to the R-ODAF DESeq2 pipeline that enforces fixed,
-  auditable thresholds for reproducible RNA-seq DEG analysis. Deployed at r-odaf.nl;
-  project environment captured via renv for rebuildability.
-version: 0.9.0
-date-released: 2025-11-12
-repository-code: "https://github.com/fcaiment/R-ODAF/tree/shiny-version/Shiny_App"
+  R-ODAF-Shiny is an interactive R Shiny application implementing the
+  downstream RNA-Seq differential-expression component of the R-ODAF framework.
+  The application applies predefined analytical criteria and provides
+  quality-control visualizations, differential-expression exploration,
+  standardized outputs, within-session result comparison, and optional pathway
+  enrichment. The validated production software environment is defined through
+  a version-pinned Docker configuration.
+
+version: 1.0.1
+repository-code: "https://github.com/TGX-UM/R-ODAF-Shiny"
 url: "https://r-odaf.nl"
-license: "TBD"   # update when you choose (e.g., MIT or GPL-3.0)
-preferred-citation:
-  type: article
-  authors:
-    - family-names: Lodhi
-      given-names: Saad
-    - family-names: Verheijen
-      given-names: Marcha
-    - family-names: de Kok
-      given-names: Theo M.
-    - family-names: Caiment
-      given-names: Florian
-    - family-names: Jennen
-      given-names: Danyel
-  title: "R-ODAF-Shiny: A Graphical Interface for Reproducible Transcriptomics Analysis"
-  year: 2025
-  notes: "Manuscript in preparation, Maastricht University"
+license: "MIT"
+
+keywords:
+  - RNA-Seq
+  - transcriptomics
+  - differential expression
+  - R Shiny
+  - DESeq2
+  - regulatory toxicology
+  - reproducibility
+  - R-ODAF

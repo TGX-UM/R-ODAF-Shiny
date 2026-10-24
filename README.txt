@@ -37,11 +37,11 @@ Exportable results and summary reports
 
 TempO-Seq module is planned.
 
-Run Locally (short version)
-install.packages("renv", repos = "https://cloud.r-project.org")
-renv::restore()        # restore exact package versions
-shiny::runApp(".")     # launch the app
+Run Locally using Docker
 
+The validated R-ODAF-Shiny production environment is defined by the included Dockerfile. The Docker configuration pins the R base image, CRAN snapshot, Bioconductor release, and key package versions used by the deployed application.
+
+See the Dockerfile and docs/sessionInfo.txt for details of the software environment.
 
 Inputs expected
 
@@ -53,13 +53,11 @@ Reproducibility
 
 This repository includes:
 
-renv.lock – snapshot of all package versions
+Dockerfile – version-pinned production software environment
 
-renv/activate.R – automatic environment activation
+docs/sessionInfo.txt – R and package versions for the validated production environment
 
-docs/sessionInfo.txt – R/session details
-
-Fixed analysis thresholds to ensure identical results across runs
+Fixed analysis thresholds to support reproducible results across runs
 
 See also:
 

@@ -1,2 +1,11 @@
-The data will be added here soon:
-It is from the human colonoids study done by Rodrigues et al.,2022. This was reprocessed using the R-ODAF steps mentioned in Lodhi et al 2026
+This example dataset is derived from the publicly available human colon organoid RNA-Seq study by Rodrigues et al. (2022).
+
+The dataset includes gene-level count data and corresponding sample metadata for vehicle-control and doxorubicin-exposed human intestinal organoids.
+
+For use in R-ODAF-Shiny, the data were processed according to the R-ODAF workflow and are provided here as a bundled example dataset for demonstrating the application.
+
+Original study:
+Rodrigues et al. (2022)
+
+ArrayExpress accession:
+E-MTAB-11297
